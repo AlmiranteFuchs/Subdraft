@@ -55,8 +55,8 @@ public class player_controller : MonoBehaviour
 
     private void FixedUpdate() {
         // Getting input 
-        horizontalInput = Input.GetAxisRaw("Horizontal");
-        verticalInput = Input.GetAxisRaw("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
 
         movement();
     }
@@ -82,28 +82,40 @@ public class player_controller : MonoBehaviour
 
     private void movement()
     {
+
         // Horizontal movement
-        // Add velocity to rigidbody
-        if(horizontalInput >= 0.2f){
-            rigidbody.AddForce(new Vector2(speed,0));
-        }else if(horizontalInput <= -0.2f ){
-            rigidbody.AddForce(new Vector2(-speed,0));
-        }else{
-            // Lol
-        }
+        rigidbody.velocity = new Vector2(
+            Mathf.Lerp(rigidbody.velocity.x, horizontalInput * speed, 0.1f), rigidbody.velocity.y);
+
 
         // Vertical movement
         // Jumping
-        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W)) && isGrounded)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W)) && isGrounded)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x, jumpForce);
         }
 
-        if(rigidbody.velocity.x > max_speed){
-            rigidbody.velocity = new Vector2(max_speed, rigidbody.velocity.y);
-        }else if (-rigidbody.velocity.x > max_speed){
-            rigidbody.velocity = new Vector2(-max_speed, rigidbody.velocity.y);
-        }
+
+        // Old phyics based 
+
+        
+        //// Horizontal movement
+        //// Add velocity to rigidbody
+        // if(horizontalInput >= 0.2f){
+        //     rigidbody.AddForce(new Vector2(speed,0));
+        // }else if(horizontalInput <= -0.2f ){
+        //     rigidbody.AddForce(new Vector2(-speed,0));
+        // }else{
+        //     // Lol
+        // }
+    
+
+
+        // if(rigidbody.velocity.x > max_speed){
+        //     rigidbody.velocity = new Vector2(max_speed, rigidbody.velocity.y);
+        // }else if (-rigidbody.velocity.x > max_speed){
+        //     rigidbody.velocity = new Vector2(-max_speed, rigidbody.velocity.y);
+        // }
         // if (rigidbody.velocity.y > max_speed)
         //     rigidbody.velocity = new Vector2(rigidbody.velocity.x, max_speed);
         // if (rigidbody.velocity.y < -max_speed)
