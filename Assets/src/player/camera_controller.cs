@@ -16,7 +16,7 @@ public class camera_controller : MonoBehaviour
     [SerializeField] private float camera_width = 0.5f;
 
     // Logic
-    [SerializeField] private Vector3 player_pos, target_pos;
+    [SerializeField] private Vector3 player_pos, target_pos, offset;
 
 
 
@@ -32,8 +32,14 @@ public class camera_controller : MonoBehaviour
     {
         // Get player position
         player_pos = new Vector3(player.position.x, player.position.y, -10);
+
+        // offset is determined by the velocity of the player
+        offset = new Vector3(player.GetComponent<Rigidbody2D>().velocity.x / 2, 0, -10);
            
-        transform.position = Vector3.Lerp(new Vector3(transform.position.x, transform.position.y, -10), player_pos, camera_speed);
+        // Target position is the player position plus the offset
+        target_pos = player_pos + offset;
+
+        transform.position = Vector3.Lerp(new Vector3(transform.position.x, transform.position.y, -10), target_pos, Time.deltaTime * camera_speed);
 
 
         
